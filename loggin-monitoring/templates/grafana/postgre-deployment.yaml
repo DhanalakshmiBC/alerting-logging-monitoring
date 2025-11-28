@@ -62,7 +62,9 @@ spec:
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
+              subPath: pgdata 
+
+  volumes:
    - name: postgres-data
-     mountPath: /var/lib/postgresql/data 
-     subPath: data
+     persistentVolumeClaim:
+       claimName: grafana-pvc
