@@ -34,4 +34,3 @@ spec:
                  name: kibana 
                  port: 
                    number: 5601
-{{- end}}
