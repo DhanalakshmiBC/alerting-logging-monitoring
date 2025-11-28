@@ -5,10 +5,18 @@ metadata:
   namespace: efk
   annotations:
     kubernetes.io/ingress.class: nginx
-
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
-  rules:
+  tls:
+  - hosts:
+      - grafana.68.233.108.177.nip.io
+      - kibana.68.233.108.177.nip.io
+      - prometheus.68.233.108.177.nip.io
+      - alertmanager.68.233.108.177.nip.io
+      - elasticsearch.68.233.108.177.nip.io
+    secretName: efk-tls
 
+  rules:
     # Grafana
     - host: grafana.68.233.108.177.nip.io
       http:
