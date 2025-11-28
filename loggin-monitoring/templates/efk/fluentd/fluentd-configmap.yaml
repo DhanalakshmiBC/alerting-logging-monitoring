@@ -5,22 +5,40 @@ metadata:
   namespace: efk
 data:
   fluent.conf: |
+    @include containers.input.conf
+    @include kubernetes.conf
+    @include outputs.conf
+
+  containers.input.conf: |
     <source>
       @type tail
+      tag kubernetes.*
       path /var/log/containers/*.log
       pos_file /var/log/fluentd-containers.log.pos
-      tag kube.*
+      read_from_head true
       <parse>
         @type json
+        time_key time
+        time_type string
+        time_format "%Y-%m-%dT%H:%M:%S.%NZ"
       </parse>
     </source>
 
-    <match kube.**>
+  kubernetes.conf: |
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+    </filter>
+
+  outputs.conf: |
+    <match **>
       @type elasticsearch
       host elasticsearch
       port 9200
+      scheme http
       logstash_format true
       include_tag_key true
-      type_name access_log
-      flush_interval 5s
+      type_name fluentd
+      logstash_prefix kubernetes
+      verify_es_version_at_startup false
+      ssl_verify false
     </match>
