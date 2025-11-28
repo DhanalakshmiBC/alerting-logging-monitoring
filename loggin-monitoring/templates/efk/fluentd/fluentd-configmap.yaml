@@ -1,42 +1,58 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: fluentd-config
+  name: fluent-bit-config
+labels:
+  app: fluent-bit
 data:
-  fluent.conf: |
-    @include containers.input.conf
-    @include kubernetes.conf
-    @include outputs.conf
+  fluent-bit.conf: |
+    [SERVICE]
+        Flush        1
+        Daemon       Off
+        Log_Level    info
+        Parsers_File parsers.conf
 
-  containers.input.conf: |
-    # Input: read logs from Kubernetes nodes
-    <source>
-      @type tail
-      path /var/log/containers/*.log
-      pos_file /var/log/fluentd-containers.log.pos
-      tag kubernetes.*
-      read_from_head true
-      <parse>
-        @type json
-        time_format %Y-%m-%dT%H:%M:%S.%N%z
-      </parse>
-    </source>
+    @INCLUDE input-kubernetes.conf
+    @INCLUDE filter-kubernetes.conf
+    @INCLUDE output-elasticsearch.conf
 
-  kubernetes.conf: |
-    <filter kubernetes.**>
-      @type kubernetes_metadata
-    </filter>
+  input-kubernetes.conf: |
+    [INPUT]
+        Name              tail
+        Path              /var/log/containers/*.log
+        Parser            docker
+        Tag               kube.*
+        Mem_Buf_Limit     5MB
+        Skip_Long_Lines   On
 
-  outputs.conf: |
-    <match **>
-      @type elasticsearch
-      host elasticsearch
-      port 9200
-      scheme http
-      logstash_format true
-      include_tag_key true
-      type_name fluentd
-      logstash_prefix kubernetes
-      verify_es_version_at_startup false
-      ssl_verify false
-    </match>
+  filter-kubernetes.conf: |
+    [FILTER]
+        Name                kubernetes
+        Match               kube.*
+        Kube_URL            https://kubernetes.default.svc:443
+        Merge_Log           On
+        Keep_Log            Off
+        K8S-Logging.Parser  On
+        K8S-Logging.Exclude Off
+
+  output-elasticsearch.conf: |
+    [OUTPUT]
+        Name            es
+        Match           *
+        Host            elasticsearch
+        Port            9200
+        Logstash_Format On
+        Generate_ID     On
+        HTTP_User       ${ES_USER}
+        HTTP_Passwd     ${ES_PASSWORD}
+        tls             Off   # Set to On if using TLS
+        Index           fluentbit
+        Type            _doc
+
+  parsers.conf: |
+    [PARSER]
+        Name   docker
+        Format json
+        Time_Key time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+        Time_Keep On

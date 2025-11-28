@@ -1,56 +1,47 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: fluentd
+  name: fluent-bit
   labels:
-    app: fluentd
+    app: fluent-bit
 spec:
   selector:
     matchLabels:
-      app: fluentd
+      app: fluent-bit
   template:
     metadata:
       labels:
-        app: fluentd
+        app: fluent-bit
     spec:
-      serviceAccountName: fluentd
+      serviceAccountName: fluent-bit
       tolerations:
-        - key: node-role.kubernetes.io/master
-          effect: NoSchedule
-          operator: Exists
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
-        - name: fluentd
-          image: ghcr.io/fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
-          imagePullPolicy: IfNotPresent
+        - name: fluent-bit
+          image: fluent/fluent-bit:latest
+          imagePullPolicy: Always
           env:
-            - name: FLUENT_ELASTICSEARCH_HOST
-              value: "elasticsearch"
-            - name: FLUENT_ELASTICSEARCH_PORT
-              value: "9200"
-            - name: FLUENT_ELASTICSEARCH_SCHEME
-              value: "http"
-          resources:
-            limits:
-              memory: 600Mi
-            requests:
-              cpu: 100m
-              memory: 300Mi
+            - name: ES_USER
+              value: "elastic"
+            - name: ES_PASSWORD
+              value: "changeme"
           volumeMounts:
-            - name: config-volume
-              mountPath: /fluentd/etc
             - name: varlog
               mountPath: /var/log
-            - name: dockercontainerlog
+            - name: varlibdockercontainers
               mountPath: /var/lib/docker/containers
               readOnly: true
-
+            - name: fluent-bit-config
+              mountPath: /fluent-bit/etc/
       volumes:
-        - name: config-volume
-          configMap:
-            name: fluentd-config
         - name: varlog
           hostPath:
             path: /var/log
-        - name: dockercontainerlog
+        - name: varlibdockercontainers
           hostPath:
             path: /var/lib/docker/containers
+        - name: fluent-bit-config
+          configMap:
+            name: fluent-bit-config
