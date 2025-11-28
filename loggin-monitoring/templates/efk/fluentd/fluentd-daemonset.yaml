@@ -20,7 +20,7 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: fluent-bit
-          image: docker.io/fluent/fluent-bit:1.9.12
+          image: docker.io/fluent/fluent-bit:2.1.10
           imagePullPolicy: Always
           env:
             - name: ES_USER
