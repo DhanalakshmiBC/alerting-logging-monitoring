@@ -20,7 +20,7 @@ spec:
           operator: Exists
       containers:
         - name: fluentd
-          image: docker.io/fluent/fluentd:v1.17-1
+          image: docker.io/fluent/fluentd-kubernetes-daemonset:v1.16-debian-elasticsearch7-1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: FLUENT_ELASTICSEARCH_HOST
