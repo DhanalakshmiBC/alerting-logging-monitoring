@@ -17,13 +17,14 @@ spec:
       labels:
         app: grafana
     spec:
-      volumes:
-        - name: grafana-storage
-          persistentVolumeClaim:
-            claimName: grafana-pvc
+      
+      securityContext:
+        fsGroup: 472
+        runAsUser: 472
+        runAsGroup: 472
       containers:
         - name: grafana
-          image: grafana/grafana:latest
+          image: grafana/grafana:10.4.1
           env:
             - name: GF_SECURITY_ADMIN_USER
               value: admin
@@ -64,3 +65,7 @@ spec:
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana
+      volumes:
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-pvc
