@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluentd
-  namespace: efk
   labels:
     app: fluentd
 spec:
@@ -21,7 +20,8 @@ spec:
           operator: Exists
       containers:
         - name: fluentd
-          image: fluent/fluentd-kubernetes-daemonset:v1.16-debian-elasticsearch7-1.0
+          image: docker.io/fluent/fluentd-kubernetes-daemonset:v1.16-debian-elasticsearch7-1.0
+          imagePullPolicy: IfNotPresent
           env:
             - name: FLUENT_ELASTICSEARCH_HOST
               value: "elasticsearch"

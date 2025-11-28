@@ -14,7 +14,8 @@ spec:
       hostNetwork: false
       containers:
         - name: node-exporter
-          image: prom/node-exporter:latest
+          image: docker.io/prom/node-exporter:v1.8.1
+          imagePullPolicy: IfNotPresent
           args:
             - --path.rootfs=/host
           volumeMounts:
