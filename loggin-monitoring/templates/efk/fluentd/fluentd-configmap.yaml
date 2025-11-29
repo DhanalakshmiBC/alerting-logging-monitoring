@@ -6,8 +6,8 @@ metadata:
     argocd.argoproj.io/ignore-differences: |
       jsonPointers:
         - /metadata/labels
-labels:
-  app: fluent-bit
+  labels:
+    app: fluent-bit
 data:
   fluent-bit.conf: |
     [SERVICE]
