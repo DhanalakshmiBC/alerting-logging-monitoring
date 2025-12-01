@@ -1,23 +1,23 @@
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: example-rules
-  annotations:
-    argocd.argoproj.io/ignore-differences: |
-      jsonPointers:
-        - /spec
-        - /metadata/annotations
-        - /metadata/generation
-        - /status
-spec:
-  groups:
-  - name: example
-    rules:
-    - alert: InstanceDown
-      expr: up == 0
-      for: 5m
-      labels:
-        severity: critical
-      annotations:
-        summary: "Pod {{`{{ $labels.pod }}`}} is down"
-        description: "Pod {{`{{ $labels.pod }}`}} has been down for 5 minutes."
+# apiVersion: monitoring.coreos.com/v1
+# kind: PrometheusRule
+# metadata:
+#   name: example-rules
+#   annotations:
+#     argocd.argoproj.io/ignore-differences: |
+#       jsonPointers:
+#         - /spec
+#         - /metadata/annotations
+#         - /metadata/generation
+#         - /status
+# spec:
+#   groups:
+#   - name: example
+#     rules:
+#     - alert: InstanceDown
+#       expr: up == 0
+#       for: 5m
+#       labels:
+#         severity: critical
+#       annotations:
+#         summary: "Pod {{`{{ $labels.pod }}`}} is down"
+#         description: "Pod {{`{{ $labels.pod }}`}} has been down for 5 minutes."
