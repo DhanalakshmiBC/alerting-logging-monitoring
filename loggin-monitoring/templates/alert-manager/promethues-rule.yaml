@@ -3,6 +3,10 @@ kind: PrometheusRule
 metadata:
   name: example-rules
   labels: { role: alert-rules }
+  annotations:
+     argocd.argoproj.io/ignore-differences: |
+      jqPathExpressions:
+        - '.spec'
 spec:
   groups:
   - name: example
