@@ -15,7 +15,7 @@ spec:
       - prometheus.68.233.108.177.nip.io
       - alertmanager.68.233.108.177.nip.io
       - elasticsearch.68.233.108.177.nip.io
-    secretName: alm-tls
+    secretName: monitoring-tls
 
   rules:
     # Grafana
