@@ -1,86 +1,86 @@
-# operator-only.yaml
-# Creates namespace, SA, binding, deployment and service for Prometheus Operator
-# NOTE: This manifest does NOT create CRDs.
+# # operator-only.yaml
+# # Creates namespace, SA, binding, deployment and service for Prometheus Operator
+# # NOTE: This manifest does NOT create CRDs.
 
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: prometheus-operator
-  namespace: monitoring
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: prometheus-operator
+#   namespace: monitoring
 
----
-# For quick setup we bind the operator SA to cluster-admin.
-# In production you should create a minimal ClusterRole instead.
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: prometheus-operator-cluster-admin
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - kind: ServiceAccount
-    name: prometheus-operator
-    namespace: monitoring
+# ---
+# # For quick setup we bind the operator SA to cluster-admin.
+# # In production you should create a minimal ClusterRole instead.
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: prometheus-operator-cluster-admin
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: cluster-admin
+# subjects:
+#   - kind: ServiceAccount
+#     name: prometheus-operator
+#     namespace: monitoring
 
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: prometheus-operator
-  namespace: monitoring
-  labels:
-    name: prometheus-operator
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      name: prometheus-operator
-  template:
-    metadata:
-      labels:
-        name: prometheus-operator
-    spec:
-      serviceAccountName: prometheus-operator
-      containers:
-        - name: prometheus-operator
-          # You can change tag to a newer release if desired
-          image: quay.io/prometheus-operator/prometheus-operator:v0.75.0
-          imagePullPolicy: IfNotPresent
-          args:
-            # avoid managing CRDs here (we're not applying CRDs via this manifest)
-            # in many operator builds these flags exist; if not, remove args.
-            - --kubelet-service=kube-system/kubelet
-          livenessProbe:
-            httpGet:
-              path: /metrics
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 20
-          readinessProbe:
-            httpGet:
-              path: /metrics
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          ports:
-            - name: http
-              containerPort: 8080
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: prometheus-operator
+#   namespace: monitoring
+#   labels:
+#     name: prometheus-operator
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       name: prometheus-operator
+#   template:
+#     metadata:
+#       labels:
+#         name: prometheus-operator
+#     spec:
+#       serviceAccountName: prometheus-operator
+#       containers:
+#         - name: prometheus-operator
+#           # You can change tag to a newer release if desired
+#           image: quay.io/prometheus-operator/prometheus-operator:v0.75.0
+#           imagePullPolicy: IfNotPresent
+#           args:
+#             # avoid managing CRDs here (we're not applying CRDs via this manifest)
+#             # in many operator builds these flags exist; if not, remove args.
+#             - --kubelet-service=kube-system/kubelet
+#           livenessProbe:
+#             httpGet:
+#               path: /metrics
+#               port: 8080
+#             initialDelaySeconds: 20
+#             periodSeconds: 20
+#           readinessProbe:
+#             httpGet:
+#               path: /metrics
+#               port: 8080
+#             initialDelaySeconds: 5
+#             periodSeconds: 10
+#           ports:
+#             - name: http
+#               containerPort: 8080
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: prometheus-operator
-  namespace: monitoring
-  labels:
-    name: prometheus-operator
-spec:
-  selector:
-    name: prometheus-operator
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-  type: ClusterIP
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: prometheus-operator
+#   namespace: monitoring
+#   labels:
+#     name: prometheus-operator
+# spec:
+#   selector:
+#     name: prometheus-operator
+#   ports:
+#     - protocol: TCP
+#       port: 8080
+#       targetPort: 8080
+#   type: ClusterIP

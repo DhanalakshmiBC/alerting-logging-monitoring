@@ -1,11 +1,11 @@
-apiVersion: monitoring.coreos.com/v1
-kind: Prometheus
-metadata:
-  name: my-prometheus
-  namespace: monitoring
-spec:
-  replicas: 1
-  serviceMonitorSelector: {}
-  resources:
-    requests:
-      memory: 200Mi
+# apiVersion: monitoring.coreos.com/v1
+# kind: Prometheus
+# metadata:
+#   name: my-prometheus
+#   namespace: monitoring
+# spec:
+#   replicas: 1
+#   serviceMonitorSelector: {}
+#   resources:
+#     requests:
+#       memory: 200Mi
