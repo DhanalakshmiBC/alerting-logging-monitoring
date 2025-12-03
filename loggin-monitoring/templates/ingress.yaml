@@ -12,7 +12,7 @@ spec:
   - hosts:
       - grafana.68.233.108.177.nip.io
       - kibana.68.233.108.177.nip.io
-      # - prometheus.68.233.108.177.nip.io
+      - prometheus.68.233.108.177.nip.io
       - alertmanager.68.233.108.177.nip.io
       - elasticsearch.68.233.108.177.nip.io
     secretName: monitoring-tls
@@ -43,16 +43,16 @@ spec:
                   number: 5601
 
     # Prometheus
-    # - host: prometheus.68.233.108.177.nip.io
-    #   http:
-    #     paths:
-    #       - path: /
-    #         pathType: Prefix
-    #         backend:
-    #           service:
-    #             name: prometheus-service
-    #             port:
-    #               number: 9090
+    - host: prometheus.68.233.108.177.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: monitoring-kube-prometheus-prometheus 
+                port:
+                  number: 9090
 
     # Alertmanager
     - host: alertmanager.68.233.108.177.nip.io
