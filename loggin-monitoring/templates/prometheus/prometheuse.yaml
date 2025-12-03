@@ -1,3 +1,5 @@
+# this is for self prometheus deployment
+
 # apiVersion: monitoring.coreos.com/v1
 # kind: Prometheus
 # metadata:

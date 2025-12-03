@@ -1,3 +1,5 @@
+# This is for stand alone
+
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:

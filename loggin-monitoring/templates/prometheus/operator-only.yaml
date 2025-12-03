@@ -2,6 +2,7 @@
 # # Creates namespace, SA, binding, deployment and service for Prometheus Operator
 # # NOTE: This manifest does NOT create CRDs.
 
+# kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.75.0/bundle.yaml
 # apiVersion: v1
 # kind: ServiceAccount
 # metadata:

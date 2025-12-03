@@ -1,3 +1,4 @@
+# This is for stand alone
 # apiVersion: v1
 # kind: ConfigMap
 # metadata:
