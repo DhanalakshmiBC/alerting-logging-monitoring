@@ -162,3 +162,9 @@ These CRDs are required for the Prometheus Operator to work correctly.
 
 Contributing
 Feel free to open issues and submit PRs to enhance the chart.
+
+Grafana dashboard view
+<img width="1443" height="739" alt="Screenshot 2025-12-08 at 12 30 22 PM" src="https://github.com/user-attachments/assets/d9096b14-d045-4683-ada4-dae33d5684d4" />
+
+
+
