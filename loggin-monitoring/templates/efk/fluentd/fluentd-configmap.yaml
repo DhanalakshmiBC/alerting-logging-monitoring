@@ -51,7 +51,6 @@ data:
         HTTP_Passwd     ${ES_PASSWORD}
         tls             Off   # Set to On if using TLS
         Index           fluentbit
-        Type            _doc
 
   parsers.conf: |
     [PARSER]
