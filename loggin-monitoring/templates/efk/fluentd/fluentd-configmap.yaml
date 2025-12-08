@@ -46,6 +46,7 @@ data:
         Host            elasticsearch
         Port            9200
         Logstash_Format On
+        Suppress_Type_Name On
         Generate_ID     On
         HTTP_User       ${ES_USER}
         HTTP_Passwd     ${ES_PASSWORD}
