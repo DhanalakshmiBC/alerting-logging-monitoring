@@ -41,17 +41,15 @@ data:
 
   output-elasticsearch.conf: |
     [OUTPUT]
-        Name            es
-        Match           *
-        Host            elasticsearch
-        Port            9200
+        Name   es
+        Match  *
+        Host   elasticsearch
+        Port   9200
+        Index  fluentbit
         Logstash_Format On
         Suppress_Type_Name On
+        Replace_Dots    On
         Generate_ID     On
-        HTTP_User       ${ES_USER}
-        HTTP_Passwd     ${ES_PASSWORD}
-        tls             Off   # Set to On if using TLS
-        Index           fluentbit
 
   parsers.conf: |
     [PARSER]
