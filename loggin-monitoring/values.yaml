@@ -121,3 +121,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+
+prometheusOperator:
+  createCustomResource: false
+
+crds:
+  create: false
