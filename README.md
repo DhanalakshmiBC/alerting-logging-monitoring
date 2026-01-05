@@ -167,4 +167,7 @@ Grafana dashboard view
 <img width="1443" height="739" alt="Screenshot 2025-12-08 at 12 30 22 PM" src="https://github.com/user-attachments/assets/d9096b14-d045-4683-ada4-dae33d5684d4" />
 
 
+Prometheus UI
+<img width="1441" height="712" alt="Screenshot 2025-12-08 at 12 32 05 PM" src="https://github.com/user-attachments/assets/ae0ae176-51b0-4667-a89e-3c585d891f7d" />
+
 
